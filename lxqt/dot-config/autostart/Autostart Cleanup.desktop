@@ -1,0 +1,6 @@
+[Desktop Entry]
+Exec=/home/deorz/.config/hypr/scripts/cleanup.sh
+Name=Autostart Cleanup
+OnlyShowIn=LXQt;
+Type=Application
+Version=1.0

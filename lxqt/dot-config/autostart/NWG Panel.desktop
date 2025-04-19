@@ -1,0 +1,7 @@
+[Desktop Entry]
+Exec=nwg-panel
+Hidden=true
+Name=NWG Panel
+OnlyShowIn=LXQt;
+Type=Application
+Version=1.0

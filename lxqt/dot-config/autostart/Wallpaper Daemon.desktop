@@ -1,0 +1,6 @@
+[Desktop Entry]
+Exec=swww-daemon
+Name=Wallpaper Daemon
+OnlyShowIn=LXQt;
+Type=Application
+Version=1.0

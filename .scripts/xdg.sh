@@ -33,31 +33,51 @@ systemctl --user stop xdg-desktop-portal-wlr
 systemctl --user stop xdg-desktop-portal-hyprland
 sleep $_sleep1
 
-# Start xdg-desktop-portal-hyprland
-/usr/lib/xdg-desktop-portal-hyprland &
-sleep $_sleep1
 
+# Start xdg-desktop-portals if it's a Hyprland session
+if pgrep -x Hyprland &>/dev/null; then
 
-# Start xdg-desktop-portal-lxqt
-if [ -f /usr/lib/xdg-desktop-portal-lxqt ]; then
-    /usr/lib/xdg-desktop-portal-lxqt &
+    # Start xdg-desktop-portal-hyprland
+    /usr/lib/xdg-desktop-portal-hyprland &
     sleep $_sleep1
+
+
+    # Start xdg-desktop-portal-gtk
+    if [ -f /usr/lib/xdg-desktop-portal-gtk ]; then
+        /usr/lib/xdg-desktop-portal-gtk &
+        sleep $_sleep1
+    fi
+
+
+    # Start xdg-desktop-portal
+    /usr/lib/xdg-desktop-portal &
+    sleep $_sleep2
+
+
+    # Start required services
+    systemctl --user start pipewire
+    systemctl --user start wireplumber
+    systemctl --user start xdg-desktop-portal
+    systemctl --user start xdg-desktop-portal-gtk
+    systemctl --user start xdg-desktop-portal-hyprland
 fi
 
 
-# Start xdg-desktop-portal-gtk
-if [ -f /usr/lib/xdg-desktop-portal-gtk ]; then
+# Start xdg-desktop-portals if it's a niri session
+if pgrep -x niri &>/dev/null; then
+
+    # Start xdg-desktop-portal-gtk
     /usr/lib/xdg-desktop-portal-gtk &
     sleep $_sleep1
+
+    # Start xdg-desktop-portal-gnome
+    /usr/lib/xdg-desktop-portal-gnome &
+    sleep $_sleep1
+
+
+    # Start required services
+    systemctl --user start pipewire
+    systemctl --user start wireplumber
+    systemctl --user start xdg-desktop-portal-gtk
+    systemctl --user start xdg-desktop-portal-gnome
 fi
-
-# Start xdg-desktop-portal
-/usr/lib/xdg-desktop-portal &
-sleep $_sleep2
-
-# Start required services
-systemctl --user start pipewire
-systemctl --user start wireplumber
-systemctl --user start xdg-desktop-portal
-systemctl --user start xdg-desktop-portal-gtk
-systemctl --user start xdg-desktop-portal-hyprland

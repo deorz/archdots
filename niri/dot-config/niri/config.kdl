@@ -1,0 +1,249 @@
+// This config is in the KDL format: https://kdl.dev
+// "/-" comments out the following node.
+// Check the wiki for a full description of the configuration:
+// https://github.com/YaLTeR/niri/wiki/Configuration:-Overview
+
+// Input device configuration.
+// Find the full list of options on the wiki:
+// https://github.com/YaLTeR/niri/wiki/Configuration:-Input
+input {
+    keyboard {
+        xkb {
+            layout "us,ru"
+            options "grp:win_space_toggle,ctrl:nocaps"
+        }
+    }
+
+    touchpad {
+        tap
+        // dwt
+        // dwtp
+        // drag-lock
+        natural-scroll
+        // accel-speed 0.2
+        // accel-profile "flat"
+        // scroll-method "two-finger"
+        // disabled-on-external-mouse
+    }
+
+    mouse {
+        // natural-scroll
+        // accel-speed 0.2
+        accel-profile "flat"
+        // scroll-method "no-scroll"
+    }
+}
+
+output "eDP-1" {
+    off
+}
+
+output "DP-1" {
+    mode "2560x1440@180.000"
+}
+
+layout {
+    gaps 30
+
+    center-focused-column "never"
+
+    preset-column-widths {
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+    }
+
+    default-column-width { proportion 0.5; }
+    focus-ring {
+        width 4
+        active-color "#7fc8ff"
+        inactive-color "#505050"
+    }
+
+    border {
+        off
+
+        width 4
+        active-color "#ffc87f"
+        inactive-color "#505050"
+    }
+
+    shadow {
+        softness 30
+        spread 5
+        offset x=0 y=5
+        color "#0007"
+    }
+
+    struts {
+        // left 64
+        // right 64
+        // top 64
+        // bottom 64
+    }
+}
+
+// Setup XDG for screen sharing
+// spawn-at-startup "~/xdg.sh"
+
+// Start Polkit
+spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
+
+// Start Network Manager applet
+spawn-at-startup "nm-applet"
+
+// Start Bluetooth applet
+spawn-at-startup "blueman-applet"
+
+// Start Notification Daemon
+spawn-at-startup "swaync"
+
+// Load GTK settings
+spawn-at-startup "~/gtk.sh"
+
+// Load cliphist history
+spawn-at-startup "wl-paste" "--watch" "cliphist" "store"
+
+// Wallpaper daemon
+spawn-at-startup "swww-daemon"
+
+// Ignis Bar
+spawn-at-startup "ignis" "init"
+
+// Xwayland
+// spawn-at-startup "xwayland-satellite"
+
+screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
+environment {
+    // DISPLAY ":1"
+
+    // Session
+    XDG_SESSION_TYPE "wayland"
+
+    // QT
+    QT_QPA_PLATFORM "wayland"
+    QT_QPA_PLATFORMTHEME "qt6ct"
+    QT_WAYLAND_DISABLE_WINDOWDECORATION "1"
+    QT_AUTO_SCREEN_SCALE_FACTOR "1"
+
+    // GDK
+    GDK_SCALE "1"
+    GDK_BACKEND "wayland,x11"
+
+    // Toolkit Backend
+    CLUTTER_BACKEND "wayland"
+
+    // Mozilla
+    MOZ_ENABLE_WAYLAND "1"
+
+    // Ozone
+    OZONE_PLATFORM "wayland"
+    ELECTRON_OZONE_PLATFORM_HINT "wayland"
+
+    // SDL
+    SDL_VIDEODRIVER "wayland"
+}
+
+animations {
+    // Uncomment to turn off all animations.
+    // off
+
+    // Slow down all animations by this factor. Values below 1 speed them up instead.
+    slowdown 2.0
+}
+
+hotkey-overlay {
+    skip-at-startup
+}
+
+prefer-no-csd
+
+// Open the Firefox picture-in-picture player as floating by default.
+window-rule {
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    open-floating true
+}
+
+// Open the Firefox picture-in-picture player as floating by default.
+window-rule {
+    match app-id=r#"waypaper$"#
+    open-floating true
+}
+
+window-rule {
+    geometry-corner-radius 12
+    clip-to-geometry true
+    opacity 0.9
+    // open-maximized true
+}
+
+binds {
+    Mod+Shift+Slash { show-hotkey-overlay; }
+
+    Mod+Q { close-window; }
+
+    Mod+T { spawn "kitty"; }
+    Mod+R { spawn "anyrun"; }
+
+    XF86AudioRaiseVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-"; }
+    XF86AudioMute        allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
+    XF86AudioMicMute     allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
+
+    Mod+H     { focus-column-left; }
+    Mod+J     { focus-window-down; }
+    Mod+K     { focus-window-up; }
+    Mod+L     { focus-column-right; }
+
+    Mod+Shift+H     { move-column-left; }
+    Mod+Shift+J     { move-window-down; }
+    Mod+Shift+K     { move-window-up; }
+    Mod+Shift+L     { move-column-right; }
+
+    Mod+WheelScrollDown      cooldown-ms=150 { focus-workspace-down; }
+    Mod+WheelScrollUp        cooldown-ms=150 { focus-workspace-up; }
+    Mod+Shift+WheelScrollDown      { focus-column-right; }
+    Mod+Shift+WheelScrollUp        { focus-column-left; }
+
+    Mod+1 { focus-workspace 1; }
+    Mod+2 { focus-workspace 2; }
+    Mod+3 { focus-workspace 3; }
+    Mod+4 { focus-workspace 4; }
+    Mod+5 { focus-workspace 5; }
+
+    Mod+Shift+1 { move-column-to-workspace 1; }
+    Mod+Shift+2 { move-column-to-workspace 2; }
+    Mod+Shift+3 { move-column-to-workspace 3; }
+    Mod+Shift+4 { move-column-to-workspace 4; }
+    Mod+Shift+5 { move-column-to-workspace 5; }
+
+    Mod+BracketLeft  { consume-or-expel-window-left; }
+    Mod+BracketRight { consume-or-expel-window-right; }
+
+    Mod+F { maximize-column; }
+    Mod+Shift+F { fullscreen-window; }
+
+    Mod+C { center-column; }
+
+    Mod+Minus { set-column-width "-10%"; }
+    Mod+Equal { set-column-width "+10%"; }
+
+    Mod+Shift+Minus { set-window-height "-10%"; }
+    Mod+Shift+Equal { set-window-height "+10%"; }
+
+    Mod+W       { toggle-window-floating; }
+    Mod+Shift+W { switch-focus-between-floating-and-tiling; }
+
+    Mod+P { screenshot; }
+    Mod+Shift+P { screenshot-screen; }
+    Mod+Ctrl+P { screenshot-window; }
+
+    Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
+
+    Mod+Ctrl+Escape { quit; }
+
+    // Powers off the monitors. To turn them back on, do any input like
+    // moving the mouse or pressing any other key.
+    // Mod+Shift+P { power-off-monitors; }
+}

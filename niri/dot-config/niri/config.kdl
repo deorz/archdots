@@ -43,7 +43,7 @@ output "DP-1" {
 }
 
 layout {
-    gaps 30
+    gaps 16
 
     center-focused-column "never"
 
@@ -150,7 +150,7 @@ animations {
     // off
 
     // Slow down all animations by this factor. Values below 1 speed them up instead.
-    slowdown 2.0
+    slowdown 3.0
 }
 
 hotkey-overlay {
@@ -172,10 +172,18 @@ window-rule {
 }
 
 window-rule {
-    geometry-corner-radius 12
+    geometry-corner-radius 10
     clip-to-geometry true
+}
+
+window-rule {
+    match is-active=true
     opacity 0.9
-    // open-maximized true
+}
+
+window-rule {
+    match is-active=false
+    opacity 0.8
 }
 
 binds {
@@ -221,6 +229,7 @@ binds {
     Mod+BracketLeft  { consume-or-expel-window-left; }
     Mod+BracketRight { consume-or-expel-window-right; }
 
+    Mod+S { switch-preset-column-width; }
     Mod+F { maximize-column; }
     Mod+Shift+F { fullscreen-window; }
 
@@ -236,8 +245,6 @@ binds {
     Mod+Shift+W { switch-focus-between-floating-and-tiling; }
 
     Mod+P { screenshot; }
-    Mod+Shift+P { screenshot-screen; }
-    Mod+Ctrl+P { screenshot-window; }
 
     Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
 

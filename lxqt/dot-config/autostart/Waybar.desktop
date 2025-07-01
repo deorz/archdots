@@ -1,6 +1,0 @@
-[Desktop Entry]
-Exec=waybar
-Name=Waybar
-OnlyShowIn=LXQt;
-Type=Application
-Version=1.0

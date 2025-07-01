@@ -1,6 +1,0 @@
-[Desktop Entry]
-Exec=/home/deorz/.config/hypr/scripts/xdg.sh
-Name=XDG Setup
-OnlyShowIn=LXQt;
-Type=Application
-Version=1.0

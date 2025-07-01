@@ -1,6 +1,0 @@
-[Desktop Entry]
-Exec=wl-paste --watch cliphist store
-Name=Clipboard Manager
-OnlyShowIn=LXQt;
-Type=Application
-Version=1.0

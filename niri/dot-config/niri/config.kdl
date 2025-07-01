@@ -1,7 +1,7 @@
 // This config is in the KDL format: https://kdl.dev
 // "/-" comments out the following node.
 // Check the wiki for a full description of the configuration:
-// https://github.com/YaLTeR/niri/wiki/Configuration:-Overview
+// https://github.com/YaLTeR/niri/wiki/Configuration:-Introduction
 
 // Input device configuration.
 // Find the full list of options on the wiki:
@@ -16,6 +16,11 @@ input {
             layout "us,ru"
             options "grp:win_space_toggle,ctrl:nocaps"
         }
+        repeat-delay 500
+        repeat-rate 35
+
+        // Enable numlock on startup, omitting this setting disables it.
+        // numlock
     }
 
     // Next sections include libinput settings.
@@ -25,6 +30,7 @@ input {
         tap
         // dwt
         // dwtp
+        // drag false
         // drag-lock
         natural-scroll
         // accel-speed 0.2
@@ -65,13 +71,14 @@ input {
 // Find more information on the wiki:
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Outputs
 // Remember to uncomment the node by removing "/-"!
-output "eDP-2" {
-    off
+output "eDP-1" {
+    // off
     mode "2560x1600@165.040"
 }
 
 
-output "DP-1" {
+output "DP-3" {
+    // off
     mode "2560x1440@180.000"
 }
 
@@ -80,7 +87,7 @@ output "DP-1" {
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Layout
 layout {
     // Set gaps around windows in logical pixels.
-    gaps 32
+    gaps 12
 
     // When to center a column when changing focus, options are:
     // - "never", default behavior, focusing an off-screen column will keep at the left
@@ -89,6 +96,7 @@ layout {
     // - "on-overflow", focusing a column will center it if it doesn't fit
     //   together with the previously focused column.
     center-focused-column "on-overflow"
+    always-center-single-column
 
     // You can customize the widths that "switch-preset-column-width" (Mod+R) toggles between.
     preset-column-widths {
@@ -128,7 +136,7 @@ layout {
         // off
 
         // How many logical pixels the ring extends out from the windows.
-        width 3
+        width 2
 
         // Colors can be set in a variety of ways:
         // - CSS named colors: "red"
@@ -136,10 +144,10 @@ layout {
         // - CSS-like notation: "rgb(255, 127, 0)", rgba(), hsl() and a few others.
 
         // Color of the ring on the active monitor.
-        active-color "#7fc8ff"
+        // active-color "#83a598"
 
         // Color of the ring on inactive monitors.
-        inactive-color "#505050"
+        // inactive-color "#505050"
 
         // You can also use gradients. They take precedence over solid colors.
         // Gradients are rendered the same as CSS linear-gradient(angle, from, to).
@@ -148,13 +156,13 @@ layout {
         // You can use any CSS linear-gradient tool on the web to set these up.
         // Changing the color space is also supported, check the wiki for more info.
         //
-        // active-gradient from="#80c8ff" to="#bbddff" angle=45
+        active-gradient from="#80c8ff" to="#bbddff" angle=45
 
         // You can also color the gradient relative to the entire view
         // of the workspace, rather than relative to just the window itself.
         // To do that, set relative-to="workspace-view".
         //
-        // inactive-gradient from="#505050" to="#808080" angle=45 relative-to="workspace-view"
+        inactive-gradient from="#505050" to="#808080" angle=45 relative-to="workspace-view"
     }
 
     // You can also add a border. It's similar to the focus ring, but always visible.
@@ -166,6 +174,9 @@ layout {
         width 4
         active-color "#ffc87f"
         inactive-color "#505050"
+
+        // Color of the border around windows that request your attention.
+        urgent-color "#9b0000"
 
         // active-gradient from="#ffbb66" to="#ffc880" angle=45 relative-to="workspace-view"
         // inactive-gradient from="#505050" to="#808080" angle=45 relative-to="workspace-view"
@@ -214,25 +225,26 @@ layout {
     // Top and bottom struts will simply add outer gaps in addition to the area occupied by
     // layer-shell panels and regular gaps.
     struts {
-        // left 64
-        // right 64
-        // top 64
-        // bottom 64
+        left 12
+        right 12
+        top 12
+        bottom 12
     }
+
+    background-color "transparent"
 }
 
 // Add lines like this to spawn processes at startup.
 // Note that running niri as a session supports xdg-desktop-autostart,
 // which may be more convenient to use.
 // See the binds section below for more spawn examples.
-// spawn-at-startup "alacritty" "-e" "fish"
 
 // Uncomment this line to ask the clients to omit their client-side decorations if possible.
 // If the client will specifically ask for CSD, the request will be honored.
 // Additionally, clients will be informed that they are tiled, removing some client-side rounded corners.
 // This option will also fix border/focus ring drawing behind some semitransparent windows.
 // After enabling or disabling this, you need to restart the apps for this to take effect.
-// prefer-no-csd
+prefer-no-csd
 
 // You can change the path where screenshots are saved.
 // A ~ at the front will be expanded to the home directory.
@@ -250,20 +262,38 @@ animations {
     // off
 
     // Slow down all animations by this factor. Values below 1 speed them up instead.
-    slowdown 3.0
+    // slowdown 1.2
 }
 
 // Window rules let you adjust behavior for individual windows.
 // Find more information on the wiki:
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Window-Rules
+layer-rule {
+    match namespace="^astal-notifications$"
+    block-out-from "screencast"
+}
 
-prefer-no-csd
+layer-rule {
+    match namespace="^swww-daemon$"
+    place-within-backdrop true
+}
+
+
 
 window-rule {
     match title="^Picture in picture$"
-    match app-id="^waypaper$"
     match app-id="^org.gnome.clocks$"
     match app-id="^eog$"
+    match app-id="^org.gnome.Calendar$"
+    match app-id="^com.belmoussaoui.Authenticator$"
+    match app-id="^app.drey.Dialect$"
+    match app-id="^org.gnome.baobab$"
+    match app-id="^org.gnome.Settings"
+    match app-id="^space.rirusha.Cassette$"
+    match app-id="^blueman-manager$"
+    match app-id="^org.gnome.Nautilus$"
+    match app-id="^org.Waytrogen.Waytrogen$"
+    match app-id="^brave-.*-Default$"
 
     open-floating true
 }
@@ -291,28 +321,9 @@ window-rule {
     clip-to-geometry true
 }
 
-/- window-rule {
-  match is-active=true
-  opacity 0.9
-}
-
-/- window-rule {
-  match is-active=false
-  opacity 0.8
-}
-
-layer-rule {
-    match namespace="^swaync-notification-window$"
-
-    block-out-from "screencast"
-}
-
-spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
-
-spawn-at-startup "xwayland-satellite"
-
-environment {
-    DISPLAY ":0"
+cursor {
+    hide-when-typing
+    hide-after-inactive-ms 1000
 }
 
 binds {
@@ -328,13 +339,12 @@ binds {
 
     // Mod-Shift-/, which is usually the same as Mod-?,
     // shows a list of important hotkeys.
-    Mod+Shift+Slash { show-hotkey-overlay; }
+    // Mod+Shift+Slash { show-hotkey-overlay; }
 
     // Suggested binds for running programs: terminal, app launcher, screen locker.
-    Mod+T { spawn "alacritty"; }
-    Mod+D { spawn "fuzzel"; }
-    Mod+E { spawn "nautilus"; }
-    Super+Ctrl+Q { spawn "hyprlock"; }
+    // Mod+T hotkey-overlay-title="Open a Terminal: Ptyxis" { spawn "ptyxis" "-s"; }
+    Mod+T hotkey-overlay-title="Open a Terminal: Ghostty" { spawn "ghostty"; }
+    Mod+D hotkey-overlay-title="Run an Application: Walker" { spawn "walker" "-m" "applications"; }
 
     // You can also use a shell. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument in the end.
@@ -342,10 +352,15 @@ binds {
 
     // Example volume keys mappings for PipeWire & WirePlumber.
     // The allow-when-locked=true property makes them work even when the session is locked.
-    XF86AudioRaiseVolume allow-when-locked=true { spawn "swayosd-client" "--output-volume" "raise"; }
-    XF86AudioLowerVolume allow-when-locked=true { spawn "swayosd-client" "--output-volume" "lower"; }
-    XF86AudioMute        allow-when-locked=true { spawn "swayosd-client" "--output-volume" "mute-toggle"; }
-    XF86AudioMicMute     allow-when-locked=true { spawn "swayosd-client" "--input-volume" "mute-toggle"; }
+    XF86AudioRaiseVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-"; }
+    XF86AudioMute        allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
+    XF86AudioMicMute     allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
+
+    // Open/close the Overview: a zoomed-out view of workspaces and windows.
+    // You can also move the mouse into the top-left hot corner,
+    // or do a four-finger swipe up on a touchpad.
+    Mod+O repeat=false { toggle-overview; }
 
     Mod+Q { close-window; }
 
@@ -377,17 +392,17 @@ binds {
     // Mod+Shift+Ctrl+Left  { move-workspace-to-monitor-left; }
     // ...
 
-    Mod+U              { focus-workspace-down; }
-    Mod+I              { focus-workspace-up; }
-    Mod+Shift+U         { move-column-to-workspace-down; }
-    Mod+Shift+I         { move-column-to-workspace-up; }
+    // Mod+U              { focus-workspace-down; }
+    // Mod+I              { focus-workspace-up; }
+    // Mod+Shift+U         { move-column-to-workspace-down; }
+    // Mod+Shift+I         { move-column-to-workspace-up; }
 
     // Alternatively, there are commands to move just a single window:
     // Mod+Ctrl+Page_Down { move-window-to-workspace-down; }
     // ...
 
-    Mod+Ctrl+U         { move-workspace-down; }
-    Mod+Ctrl+I         { move-workspace-up; }
+    // Mod+Ctrl+U         { move-workspace-down; }
+    // Mod+Ctrl+I         { move-workspace-up; }
 
     // You can bind mouse wheel scroll ticks using the following syntax.
     // These binds will change direction based on the natural-scroll setting.
@@ -461,6 +476,7 @@ binds {
     Mod+Period { expel-window-from-column; }
 
     Mod+R { switch-preset-column-width; }
+    Mod+Shift+R { expand-column-to-available-width; }
     Mod+F { maximize-column; }
     Mod+Shift+F { fullscreen-window; }
 

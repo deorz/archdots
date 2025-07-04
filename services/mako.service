@@ -4,5 +4,6 @@ After=graphical-session.target
 Requisite=graphical-session.target
 
 [Service]
-ExecStart=/usr/bin/swayosd-server
+ExecStart=/usr/bin/mako -c /home/deorz/.config/niri/mako/config
 Restart=on-failure
+

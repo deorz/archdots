@@ -4,7 +4,8 @@ After=graphical-session.target
 Requisite=graphical-session.target
 
 [Service]
-ExecStart=/usr/bin/wlsunset -l 55.9 -L 37.6
-Restart=on-failure
+WorkingDirectory=%h/.config/ags
+ExecStart=/usr/bin/lua5.1 init.lua
 
-
+[Install]
+WantedBy=default.target
